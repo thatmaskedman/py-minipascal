@@ -16,13 +16,5 @@ class Lexical:
 
     def analyze():
         with open('example.pas') as f:
-            for line in f.readlines():
-                for c in line:
-                    if not Lexical.dfa.validated:
-                    #print(c,end='')
-                        Lexical.dfa.change_state(c)
-                    else:
-                        Lexical.lexical_components.append(Lexical.dfa.out_str)
-                        Lexical.dfa.reset()
-                        Lexical.dfa.change_state(c)
-            #EOF
+            print(f.readline())
+            print(f.seek(-1,1))
