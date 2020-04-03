@@ -1,11 +1,28 @@
 import yaml
+from automata import Automata
 
 class Lexical:
+    lexical_components = []
+    file_path = "example.pas"
+    final_states = {100,101,102,103,104,105,106,107,
+                    108,109,110,111,112,113,114,115,
+                    116,117,118,500,501,502,503,504}
 
-    """Docstring for Lexical. """
+    with open('transitions.yaml', 'r') as f:
+        transitions = yaml.safe_load(f.read())
+        f.close()
 
-    def __init__(self, string):
-        """TODO: to be defined. """
-        self.string = string
-        pass       
+    dfa = Automata(transitions, final_states)
 
+    def analyze():
+        with open('example.pas') as f:
+            for line in f.readlines():
+                for c in line:
+                    if not Lexical.dfa.validated:
+                    #print(c,end='')
+                        Lexical.dfa.change_state(c)
+                    else:
+                        Lexical.lexical_components.append(Lexical.dfa.out_str)
+                        Lexical.dfa.reset()
+                        Lexical.dfa.change_state(c)
+            #EOF

@@ -1,29 +1,35 @@
 class Automata:
-
-    """Docstring for Automata. """
-
-    def __init__(self):
-        """TODO: to be defined. """
-        self.states = {} 
-        self.input_str = ""
-        self.output = ""
-        self.validated = false
-        pass
+    def __init__(self, transitions: dict, final_states: set):
+        self.final_states = final_states
+        self.transitions = transitions
+        self.current_state = 0
+        self.out_str = ""
+        self.validated = False
+        self.rejected = False
 
     def __str__(self):
         pass
 
-    def add_state(self, name, transitions, destination):
-        self.states.update(name: transitions)
-    
-    def test(self, test):
-        current_state = 0
-        for c in input_string:
-            current_state = self.states[current_state][c]
-            print(current_state)
+    def reset(self):
+        self.out_str = ""
+        self.current_state = 0
+        self.validated = False
+        self.rejected = False
 
-    def input_string(self, input_str):
-        self.input_str = input_str
-    
-    def validate():
-        pass
+    def change_state(self, c : chr):
+        # if not self.validated and not self.rejected:
+            # if c not in self.transitions:
+                # self.rejected = True
+            # else:
+        key = ""
+        if self.current_state in self.final_states:
+            self.validated = True
+        else:
+            for k in self.transitions[self.current_state].keys():
+                if c in k:
+                    key = k
+                    break
+            if k == "":
+                key = "\xfe"
+            self.current_state = self.transitions[self.current_state][key]
+            self.out_str += c

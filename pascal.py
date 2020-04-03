@@ -2,14 +2,12 @@
 
 import argparse
 import yaml
+from automata import Automata
+from lexical import Lexical
 
 def main():
-    f = open("tokens.yaml", 'r')
-    foo = yaml.safe_load(f.read())
-
-    for v, k in foo.items():
-        print(v,k)
-    pass
+    Lexical.analyze()
+    print(Lexical.lexical_components)
 
 if __name__ == "__main__":
     main()
