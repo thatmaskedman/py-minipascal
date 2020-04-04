@@ -6,7 +6,8 @@ from automata import Automata
 from lexical import Lexical
 
 def main():
-    Lexical.analyze()
+    Lexical.tokenize()
+    print(Lexical.lexical_components)
     #print(Lexical.transitions)
 
 if __name__ == "__main__":

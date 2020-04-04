@@ -1,33 +1,57 @@
 import yaml
 from automata import Automata
 
-class Lexical:
-    lexical_components = []
-    file_path = "example.pas"
-    final_states = {100,101,102,103,104,105,106,107,
-                    108,109,110,111,112,113,114,115,
-                    116,117,118,500,501,502,503,504}
-
-    with open('transitions.yaml', 'r') as f:
-        transitions = yaml.safe_load(f.read())
-        f.close()
+class Lexer:
+    def __init__(self, keywords):
+        self.lexical_components = []
+        self.file_path = "example.pas"
+        self.final_states = {100,101,102,103,104,105,106,107,
+                            108,109,110,111,112,113,114,115,
+                            116,117,118,500,501,502,503,504}
+        self.tokens = tuple()
+        with open('transitions.yaml', 'r') as f:
+            self.transitions = yaml.safe_load(f.read())
 
     dfa = Automata(transitions, final_states)
 
-    def tokenize():
+    def tokenize(self):
+        lexeme = ""
         with open('example.pas', 'rb') as f:
+            cur = ""
             while True:
-                c = f.read(1).decode('utf-8')
-                print(c,end='')
-                if c == "":
+                while not self.dfa.validated:
+                    cur = f.read(1).decode('utf-8')
+                    if cur == "":
+                        self.dfa.change_state('EOF')
+                        break
+                    self.dfa.change_state(cur)
+                    if cur.isalnum():
+                        lexeme += cur
+
+                self.lexical_components.append((lexeme, self.dfa.current_state))
+                self.dfa.reset()
+                lexeme = ""
+                if cur == '':
+
                     break
-                # if not Lexical.dfa.validated:
-                #     Lexical.dfa.change_state(c)
+                # else:
+                #     print(lexeme)
+                #     self.lexical_components.append(
+                #        (lexeme, self.dfa.current_state))
+                #     self.dfa.reset()
+                #     lexeme = ""
+                #     f.seek(-1,1)
+
+                    #self.dfa.reset()
+                    #self.change_state("EOF")
+                
+                # if not self.dfa.validated:
+                #     self.dfa.change_state(c)
                 #     if c == "":
-                #         Lexical.dfa.change_state("EOF")
+                #         self.dfa.change_state("EOF")
                 #         break
                 # else:
-                #     print(Lexical.dfa.out_str,
-                #           Lexical.dfa.current_state,
+                #     print(self.dfa.out_str,
+                #           self.dfa.current_state,
                 #           sep='->')
-                #     Lexical.dfa.reset()
+                #     self.dfa.reset()
