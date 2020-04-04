@@ -7,7 +7,7 @@ from lexical import Lexical
 
 def main():
     Lexical.analyze()
-    print(Lexical.lexical_components)
+    #print(Lexical.transitions)
 
 if __name__ == "__main__":
     main()

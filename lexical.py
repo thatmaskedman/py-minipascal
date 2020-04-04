@@ -14,7 +14,20 @@ class Lexical:
 
     dfa = Automata(transitions, final_states)
 
-    def analyze():
-        with open('example.pas') as f:
-            print(f.readline())
-            print(f.seek(-1,1))
+    def tokenize():
+        with open('example.pas', 'rb') as f:
+            while True:
+                c = f.read(1).decode('utf-8')
+                print(c,end='')
+                if c == "":
+                    break
+                # if not Lexical.dfa.validated:
+                #     Lexical.dfa.change_state(c)
+                #     if c == "":
+                #         Lexical.dfa.change_state("EOF")
+                #         break
+                # else:
+                #     print(Lexical.dfa.out_str,
+                #           Lexical.dfa.current_state,
+                #           sep='->')
+                #     Lexical.dfa.reset()
