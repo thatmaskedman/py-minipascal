@@ -39,9 +39,7 @@ class Lexer:
                             li_num)
                     if self.dfa.next_state_final(char) and self.dfa.current_state == 100:
                         self.dfa.clear()
-                        while not self.dfa.validated:
-                            self.dfa.change_state(char)
-                        # self.dfa.change_state(char)
+                        self.dfa.change_state(char)
                         self.dfa.make_string()
                         self.append_token(
                             self.dfa.out_string,
