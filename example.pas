@@ -7,7 +7,7 @@ begin
     foo := 1;
     baz := 3.0;
 
-    while a <= b do
+    while a <> b do
     begin
         a := 1
     end;
