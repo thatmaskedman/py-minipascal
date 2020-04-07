@@ -1,6 +1,6 @@
 import string
 from automata import Automata
-from errors import Error
+from error import Error
 
 class Lexer:
 
@@ -8,8 +8,6 @@ class Lexer:
         111, 112, 113, 114, 115, 116, 117, 118, 500, 501, 502, 503, 504}
 
     write_states = {1,2,3,4,5,6,7,9,103,104,105,106,107,109,110,111,112,113,115,118}
-
-    
 
     def __init__(self, dfa, keywords, sourcefile):
         self.lexical_components = []
@@ -52,7 +50,14 @@ class Lexer:
                         self.dfa.clear()
                         continue
                     self.dfa.clear()
+
+            #End of line
         f.close()
+
+        #End of File
+        self.dfa.change_state('EOF')
+        self.dfa.make_string()
+        self.append_token("EOF", self.dfa.current_state, li_num)
 
     def error_check(self):
         with open(self.file_path, 'r') as f:
@@ -60,10 +65,12 @@ class Lexer:
 
         for tokens in self.lexical_components:
             token, value, li_num = tokens
+            self.validated = True
 
             if value >= 500 <= 504:
                 print(lines[li_num-1][:-1])
-                print("^Error", li_num, "line number", Errors.error[value])
+                print("^Error", li_num, "line number", Error.errors[value])
+                self.validated = False
                 break
 
     def print_tokens(self):
