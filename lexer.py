@@ -76,10 +76,11 @@ class Lexer:
 
             if value >= 500 <= 504:
                 print(lines[li_num-1][:-1],
-                    f"^Error at {li_num} line number", Error.errors[value],
+                    f"^Error at line {li_num}", Error.errors[value],
                       sep='\n')
                 self.validated = False
                 break
+        self.validated = True
 
     def print_tokens(self):
         for lexical in self.lexical_components:
