@@ -20,7 +20,7 @@ def main():
                     503, 504})
     lexer = Lexer(dfa, keywords, source_file)
     lexer.tokenize()
-    # lexer.print_tokens()
+    lexer.print_tokens()
     lexer.error_check()
     #print(lexer.lexical_components)
     # dfa = Automata()

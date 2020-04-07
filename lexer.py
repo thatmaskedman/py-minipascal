@@ -50,7 +50,15 @@ class Lexer:
                         self.dfa.clear()
                         continue
                     self.dfa.clear()
-            # self.dfa.change_state('EOL')
+
+            self.dfa.change_state('EOL')
+            if self.dfa.validated:
+                self.dfa.make_string()
+                self.append_token(
+                            lexeme,
+                            self.dfa.current_state,
+                            li_num)
+                self.dfa.clear()
 
             #End of line
         f.close()
@@ -76,7 +84,7 @@ class Lexer:
 
             if value >= 500 <= 504:
                 print(lines[li_num-1][:-1],
-                    f"^Error at line {li_num}", Error.errors[value],
+                    f"^Error at line {li_num}; {Error.errors[value]}",
                       sep='\n')
                 self.validated = False
                 break

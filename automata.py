@@ -40,6 +40,8 @@ class Automata:
             return "NUM"
         elif c == "EOF":
             return "EOF"
+        elif c == "EOL":
+            return "EOL"
         elif c in "=+-*<>:.;(){}\" \n\t":
             return c
         else:
