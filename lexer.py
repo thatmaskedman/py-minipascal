@@ -1,5 +1,6 @@
 import string
 from automata import Automata
+from errors import Error
 
 class Lexer:
 
@@ -7,6 +8,8 @@ class Lexer:
         111, 112, 113, 114, 115, 116, 117, 118, 500, 501, 502, 503, 504}
 
     write_states = {1,2,3,4,5,6,7,9,103,104,105,106,107,109,110,111,112,113,115,118}
+
+    
 
     def __init__(self, dfa, keywords, sourcefile):
         self.lexical_components = []
@@ -58,9 +61,9 @@ class Lexer:
         for tokens in self.lexical_components:
             token, value, li_num = tokens
 
-            if value >= 500:
+            if value >= 500 <= 504:
                 print(lines[li_num-1][:-1])
-                print("^ Error at", li_num, "line number")
+                print("^Error", li_num, "line number", Errors.error[value])
                 break
 
     def print_tokens(self):
