@@ -21,8 +21,10 @@ def main():
 
     lexer = Lexer(dfa, keywords, args.source)
     lexer.tokenize()
-    lexer.print_tokens()
     lexer.error_check()
+    if lexer.validated:
+        print("Lexical analysis complete, no errors found.")
+
 
 if __name__ == "__main__":
     main()

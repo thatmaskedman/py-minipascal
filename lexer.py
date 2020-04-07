@@ -12,8 +12,7 @@ class Lexer:
 
     def __init__(self, dfa, keywords, sourcefile):
         self.lexical_components = []
-        self.file_path = "example.pas"
-        self.sourcefile = sourcefile
+        self.file_path = sourcefile
         self.keywords = keywords
         self.dfa = dfa
         self.passes = False
