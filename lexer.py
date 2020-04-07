@@ -23,7 +23,7 @@ class Lexer:
     def tokenize(self):
         self.dfa.set_write_states(self.write_states)
         f = open(self.file_path, 'r')
-        for li_num, line in enumerate(f.readlines(), 1):
+        for li_num, line in enumerate(f, 1):
             for char in line:
                 self.dfa.change_state(char)
                 if self.dfa.validated:
@@ -50,14 +50,21 @@ class Lexer:
                         self.dfa.clear()
                         continue
                     self.dfa.clear()
+            # self.dfa.change_state('EOL')
 
             #End of line
         f.close()
 
-        #End of File
+         # End of File error token handling
         self.dfa.change_state('EOF')
         self.dfa.make_string()
-        self.append_token("EOF", self.dfa.current_state, li_num)
+        if self.dfa.validated:
+            self.append_token(
+                self.dfa.out_string,
+                self.dfa.current_state,
+                li_num)
+
+
 
     def error_check(self):
         with open(self.file_path, 'r') as f:
@@ -68,8 +75,9 @@ class Lexer:
             self.validated = True
 
             if value >= 500 <= 504:
-                print(lines[li_num-1][:-1])
-                print("^Error", li_num, "line number", Error.errors[value])
+                print(lines[li_num-1][:-1],
+                    f"^Error at {li_num} line number", Error.errors[value],
+                      sep='\n')
                 self.validated = False
                 break
 
