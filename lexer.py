@@ -7,7 +7,8 @@ class Lexer:
     final_states = {100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110,
         111, 112, 113, 114, 115, 116, 117, 118, 500, 501, 502, 503, 504}
 
-    write_states = {1,2,3,4,5,6,7,9,103,104,105,106,107,109,110,111,112,113,115,118}
+    write_states = {1,2,3,4,5,6,7,9,103,104,105,106,107,109,110,111,112,113,
+                    115,118}
 
     def __init__(self, dfa, keywords, sourcefile):
         self.lexical_components = []
@@ -51,6 +52,7 @@ class Lexer:
                         continue
                     self.dfa.clear()
 
+            #End of line handling
             self.dfa.change_state('EOL')
             if self.dfa.validated:
                 self.dfa.make_string()
@@ -60,7 +62,6 @@ class Lexer:
                             li_num)
                 self.dfa.clear()
 
-            #End of line
         f.close()
 
          # End of File error token handling
