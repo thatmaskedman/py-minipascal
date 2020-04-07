@@ -5,7 +5,7 @@ var b := real;
 begin
     {This is a comment}
     foo := 1;
-    baz := 3.0;
+    baz := 3.a;
 
     while a <> b do
     begin

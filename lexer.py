@@ -14,6 +14,7 @@ class Lexer:
         self.sourcefile = sourcefile
         self.keywords = keywords
         self.dfa = dfa
+        self.passes = False
 
     def append_token(self, token, token_id, li_num):
         self.lexical_components.append((token, token_id, li_num))
@@ -21,7 +22,7 @@ class Lexer:
     def tokenize(self):
         self.dfa.set_write_states(self.write_states)
         f = open(self.file_path, 'r')
-        for li_num, line in enumerate(f.readlines()):
+        for li_num, line in enumerate(f.readlines(), 1):
             for char in line:
                 self.dfa.change_state(char)
                 if self.dfa.validated:
@@ -49,6 +50,18 @@ class Lexer:
                         continue
                     self.dfa.clear()
         f.close()
+
+    def error_check(self):
+        with open(self.file_path, 'r') as f:
+            lines =  f.readlines()
+
+        for tokens in self.lexical_components:
+            token, value, li_num = tokens
+
+            if value >= 500:
+                print(lines[li_num-1][:-1])
+                print("^ Error at", li_num, "line number")
+                break
 
     def print_tokens(self):
         for lexical in self.lexical_components:
