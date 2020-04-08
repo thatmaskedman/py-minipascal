@@ -86,7 +86,7 @@ class Lexer:
                       sep='\n')
                 break
 
-        self.validated = not value in Error.errors
+        self.passes = not value in Error.errors
 
     def print_tokens(self):
         for lexical in self.lexical_components:
