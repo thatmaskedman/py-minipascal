@@ -72,8 +72,6 @@ class Lexer:
                 self.dfa.current_state,
                 li_num)
 
-
-
     def error_check(self):
         with open(self.file_path, 'r') as f:
             lines =  f.readlines()
