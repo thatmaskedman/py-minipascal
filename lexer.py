@@ -84,9 +84,9 @@ class Lexer:
                 print(lines[li_num-1][:-1],
                     f"^Error at line {li_num}; {Error.errors[value]}",
                       sep='\n')
-                self.validated = False
                 break
-        self.validated = True
+
+        self.validated = not value in Error.errors
 
     def print_tokens(self):
         for lexical in self.lexical_components:
