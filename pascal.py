@@ -10,7 +10,8 @@ final_states = {100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110,
                 503, 504}
 
 def main():
-    argparser = argparse.ArgumentParser(description="A mini Pascal compiler")
+    argparser = argparse.ArgumentParser(
+        description="A mini Pascal compiler implemented in Python")
     argparser.add_argument('source', help='Input source code')
     args = argparser.parse_args()
 
@@ -23,7 +24,7 @@ def main():
     lexer.tokenize()
     lexer.error_check()
     if lexer.passes:
-        print("Lexical analysis complete, no errors found."):W
+        print("Lexical analysis complete, no errors found.")
         lexer.print_tokens()
 
 
