@@ -1,27 +1,37 @@
 program all_tokens;
 
-my_int := int;
-my_real := real;
-my_string := string;
-my_input := string
+var my_int, sum, sub, mult, i := integer;
+    my_real := real;
+    my_string, my_input := string;
 
 begin
-    my_string := "test";
-    my_real = 1.0;
+    my_string := "foo";
+    my_real := 1.0;
 
-    while my_int <= 10 do
+    sum := my_int + my_int;
+    sub := my_int - my_int;
+    mult := my_int * my_int;
+
+    i := 0;
+    {Three way loop}
+    while i <= 3 do
     begin
-        if my_int = 1 or true then
+        if (i = 0) = true then
             begin
-                write("One");
+                write("Zero");
+            end;
+        else if (i = 0) = false then
+            begin
+                write("one");
             end;
         else
-            begin
-                write("Not one");
-            end;
+        begin
+            write("Not one");
+        end;
+         i :=  i + 1;
+    end;
 
-        my_int := my_int + 1;
-        my_input := read();
-    end
-
+    {Echo user's input}
+    my_input := read();
+    write(my_input)
 end.
