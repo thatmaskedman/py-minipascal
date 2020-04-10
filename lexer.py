@@ -1,6 +1,5 @@
 import string
 from automata import Automata
-from error import Error
 
 class Lexer:
 
@@ -9,6 +8,13 @@ class Lexer:
 
     write_states = {1,2,3,4,5,6,7,9,103,104,105,106,107,109,110,111,112,113,
                     115,118,119}
+
+    errors = {
+            500: "Number was expected",
+            501: "Unexpected end of file",
+            502: "Unexpected end of line",
+            503: "Ilegal character"
+        }
 
     def __init__(self, dfa, keywords, sourcefile):
         self.lexical_components = []
@@ -75,13 +81,6 @@ class Lexer:
                 li_num)
 
     def error_check(self):
-        errors = {
-            500: "Number was expected",
-            501: "Unexpected end of file",
-            502: "Unexpected end of line",
-            503: "Ilegal character"
-        }
-
         with open(self.file_path, 'r') as f:
             lines =  f.readlines()
 
@@ -91,11 +90,11 @@ class Lexer:
 
             if value >= 500 <= 504:
                 print(lines[li_num-1][:-1],
-                    f"^Error at line {li_num}; {errors[value]}",
+                    f"^Error at line {li_num}; {self.errors[value]}",
                       sep='\n')
                 break
 
-        self.passes = not value in Error.errors
+        self.passes = not value in self.errors
 
     def print_tokens(self):
         for lexical in self.lexical_components:
