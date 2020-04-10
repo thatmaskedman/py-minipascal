@@ -46,7 +46,7 @@ class Lexer:
                             self.dfa.current_state,
                             li_num)
                     if (self.dfa.next_state_final(char) and
-                    self.dfa.current_state in {100, 101, 102}):
+                    self.dfa.current_state in {100, 101, 102, 108, 109, 110, 119}):
                             self.dfa.clear()
                             self.dfa.change_state(char)
                             self.dfa.make_string()
