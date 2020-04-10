@@ -1,8 +1,7 @@
 class Error:
     errors = {
         500: "Number was expected",
-        501: "Wrong assignment operator",
-        502: "Unexpected end of file",
-        503: "Unexpected end of line",
-        504: "Ilegal character"
+        501: "Unexpected end of file",
+        502: "Unexpected end of line",
+        503: "Ilegal character"
     }
