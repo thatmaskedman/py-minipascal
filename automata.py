@@ -12,7 +12,7 @@ class Automata:
         self.validated = False
 
     def __len__(self):
-        return len(self.transition_states)
+        return len(self.trans_states)
 
     def __str__(self):
         return ""
