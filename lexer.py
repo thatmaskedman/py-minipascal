@@ -39,16 +39,20 @@ class Lexer:
                             lexeme,
                             self.dfa.current_state,
                             li_num)
-                    if self.dfa.next_state_final(char) and self.dfa.current_state == 100:
-                        self.dfa.clear()
-                        self.dfa.change_state(char)
-                        self.dfa.make_string()
-                        self.append_token(
-                            self.dfa.out_string,
-                            self.dfa.current_state,
-                            li_num)
-                        self.dfa.clear()
-                        continue
+                    if self.dfa.next_state_final(char):
+                        if self.dfa.current_state in {100, 101, 102}:
+                            self.dfa.clear()
+                            self.dfa.change_state(char)
+                            self.dfa.make_string()
+                            self.append_token(
+                                self.dfa.out_string,
+                                self.dfa.current_state,
+                                li_num)
+                            self.dfa.clear()
+                            continue
+                        else:
+                            pass
+
                     self.dfa.clear()
 
             #End of line handling

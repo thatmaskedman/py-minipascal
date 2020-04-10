@@ -42,7 +42,7 @@ class Automata:
             return "EOF"
         elif c == "EOL":
             return "EOL"
-        elif c in "=+-*<>:.;(){}\" \n\t":
+        elif c in "=+-*<>:.,;(){}\" \n\t":
             return c
         else:
             return "OC"
