@@ -1,8 +1,8 @@
 program all_tokens;
 
-var my_int, sum, sub, mult, i := integer;
-    my_real := real;
-    my_string, my_input := string;
+var my_int, sum, sub, mult, i : integer;
+    my_real : real;
+    my_string, my_input : string;
 
 begin
     my_string := "foo";
