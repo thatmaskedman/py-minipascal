@@ -75,6 +75,13 @@ class Lexer:
                 li_num)
 
     def error_check(self):
+        errors = {
+            500: "Number was expected",
+            501: "Unexpected end of file",
+            502: "Unexpected end of line",
+            503: "Ilegal character"
+        }
+
         with open(self.file_path, 'r') as f:
             lines =  f.readlines()
 
