@@ -39,8 +39,8 @@ class Lexer:
                             lexeme,
                             self.dfa.current_state,
                             li_num)
-                    if (self.dfa.next_state_final(char)
-                         self.dfa.current_state in {100, 101, 102}):
+                    if (self.dfa.next_state_final(char) and
+                    self.dfa.current_state in {100, 101, 102}):
                             self.dfa.clear()
                             self.dfa.change_state(char)
                             self.dfa.make_string()
@@ -91,7 +91,7 @@ class Lexer:
 
             if value >= 500 <= 504:
                 print(lines[li_num-1][:-1],
-                    f"^Error at line {li_num}; {Error.errors[value]}",
+                    f"^Error at line {li_num}; {errors[value]}",
                       sep='\n')
                 break
 
