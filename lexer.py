@@ -1,6 +1,7 @@
 import string
 from automata import Automata
 
+
 class Lexer:
 
     errors = {
@@ -32,7 +33,7 @@ class Lexer:
         for li_num, line in enumerate(f, 1):
             for char in line:
                 self.dfa.change_state(char)
-                if self.dfa.current_state in {100,101,102,119,108,110}:
+                if self.dfa.current_state in {100, 101, 102, 119, 108, 110}:
                     self.dfa.change_state(char)
                     self.dfa.make_string()
                     self.create_token(self.dfa.out_string,
@@ -51,13 +52,13 @@ class Lexer:
             self.dfa.change_state('EOL')
             if self.dfa.validated:
                 self.create_token(self.dfa.out_str,
-                                self.dfa.current_state,
-                                li_num)
+                                  self.dfa.current_state,
+                                  li_num)
                 self.dfa.clear()
 
         f.close()
 
-         # End of File error token handling
+        # End of File error token handling
         self.dfa.change_state('EOF')
         self.dfa.make_string()
         self.create_token(self.dfa.out_string,
@@ -65,21 +66,20 @@ class Lexer:
                           li_num,)
         self.dfa.clear()
 
-
     def error_check(self):
         with open(self.file_path, 'r') as f:
-            lines =  f.readlines()
+            lines = f.readlines()
 
         for tokens in self.lexical_components:
             token, value, li_num = tokens
 
             if value >= 500 <= 504:
                 print(lines[li_num-1][:-1],
-                    f"Lexical error at line {li_num}: {self.errors[value]}",
+                      f"Lexical error at line {li_num}: {self.errors[value]}",
                       sep='\n')
                 break
 
-        self.passes = not value in self.errors
+        self.passes = value not in self.errors
 
     def print_tokens(self):
         for lexical in self.lexical_components:
