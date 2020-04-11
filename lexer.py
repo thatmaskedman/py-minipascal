@@ -1,4 +1,3 @@
-import string
 from automata import Automata
 
 
