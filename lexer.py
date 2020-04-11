@@ -64,6 +64,11 @@ class Lexer:
          # End of File error token handling
         self.dfa.change_state('EOF')
         self.dfa.make_string()
+        self.create_token(self.dfa.out_string,
+                          self.dfa.current_state,
+                          li_num,)
+        self.dfa.clear()
+
 
     def error_check(self):
         with open(self.file_path, 'r') as f:
