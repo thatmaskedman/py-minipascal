@@ -49,7 +49,7 @@ class Lexer:
 
             self.dfa.change_state('EOL')
             if self.dfa.validated:
-                self.create_token(self.dfa.out_str,
+                self.create_token(self.dfa.out_string,
                                   self.dfa.current_state,
                                   li_num)
                 self.dfa.clear()

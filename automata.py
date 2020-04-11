@@ -11,6 +11,20 @@ class Automata:
         self.out_string = ""
         self.validated = False
 
+    def char_type(self, c):
+        if c in "_" + string.ascii_letters:
+            return "ALPHA"
+        elif c in string.digits:
+            return "NUM"
+        elif c == "EOF":
+            return "EOF"
+        elif c == "EOL":
+            return "EOL"
+        elif c in "=+-*<>:.,;(){}\" \n\t":
+            return c
+        else:
+            return "OC"
+
     def change_state(self, d):
         try:
             self.current_state = self.transitions[self.current_state][self.char_type(d)]
@@ -21,6 +35,7 @@ class Automata:
 
         except KeyError:
             self.validated = False
+
 
     def clear(self):
         self.input_chars = []
@@ -39,18 +54,4 @@ class Automata:
         else:
             self.out_string = "".join(self.input_chars)
 
-    def char_type(self, c):
-        if c in "_" + string.ascii_letters:
-            return "ALPHA"
-        elif c in string.digits:
-            return "NUM"
-        elif c == "EOF":
-            return "EOF"
-        elif c == "EOL":
-            return "EOL"
-        elif c in "=+-*<>:.,;(){}\" \n\t":
-            return c
-        else:
-            return "OC"
 
-    
