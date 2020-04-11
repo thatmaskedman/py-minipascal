@@ -18,7 +18,6 @@ class Lexer:
         self.passes = False
 
     def create_token(self, string, value, li_num):
-        print(string)
         if string in self.keywords:
             self.lexical_components.append((string,
                                             self.keywords[string],
@@ -79,8 +78,4 @@ class Lexer:
                 break
 
         self.passes = value not in self.errors
-
-    def print_tokens(self):
-        for lexical in self.lexical_components:
-            print(lexical)
 
