@@ -1,11 +1,11 @@
 import string
 
 class Automata:
-    def __init__(self, transitions, final_states):
+    def __init__(self, transitions, final_states, write_states):
         self.transitions = transitions
         self.final_states = final_states
         self.input_chars = []
-        self.write_states = set()
+        self.write_states = write_states
         self.trans_states = []
         self.current_state = 0
         self.out_string = ""
@@ -19,9 +19,6 @@ class Automata:
 
     def next_state_final(self, c):
         return self.transitions[0][self.char_type(c)] in self.final_states
-
-    def set_write_states(self, states):
-        self.write_states.update(states)
 
     def make_string(self):
         if len(self.trans_states) > 1:
