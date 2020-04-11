@@ -30,6 +30,6 @@ def main():
         print("Lexical analysis complete, no errors found. Token list:",
               lexer.lexical_components, sep='\n')
 
-
 if __name__ == "__main__":
     main()
+
