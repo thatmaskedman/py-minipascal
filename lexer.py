@@ -3,10 +3,6 @@ from automata import Automata
 
 class Lexer:
 
-    final_states = {100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110,
-        111, 112, 113, 114, 115, 116, 117, 118, 500, 501, 502, 503, 504}
-
-
     errors = {
             500: "Number was expected",
             501: "Unexpected end of file",
