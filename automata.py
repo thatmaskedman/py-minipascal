@@ -11,8 +11,23 @@ class Automata:
         self.out_string = ""
         self.validated = False
 
-    def next_state_final(self, c):
-        return self.transitions[0][self.char_type(c)] in self.final_states
+    def change_state(self, d):
+        try:
+            self.current_state = self.transitions[self.current_state][self.char_type(d)]
+            self.trans_states.append(self.current_state)
+            self.input_chars.append(d)
+            if self.current_state in self.final_states:
+                self.validated = True
+
+        except KeyError:
+            self.validated = False
+
+    def clear(self):
+        self.input_chars = []
+        self.trans_states = []
+        self.current_state = 0
+        self.out_string = ""
+        self.validated = False
 
     def make_string(self):
         if len(self.trans_states) > 1:
@@ -38,20 +53,4 @@ class Automata:
         else:
             return "OC"
 
-    def clear(self):
-        self.input_chars = []
-        self.trans_states = []
-        self.current_state = 0
-        self.out_string = ""
-        self.validated = False
-
-    def change_state(self, d):
-        try:
-            self.current_state = self.transitions[self.current_state][self.char_type(d)]
-            self.trans_states.append(self.current_state)
-            self.input_chars.append(d)
-            if self.current_state in self.final_states:
-                self.validated = True
-
-        except KeyError:
-            self.validated = False
+    
