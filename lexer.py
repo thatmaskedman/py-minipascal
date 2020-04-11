@@ -6,8 +6,6 @@ class Lexer:
     final_states = {100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110,
         111, 112, 113, 114, 115, 116, 117, 118, 500, 501, 502, 503, 504}
 
-    write_states = {1,2,3,4,5,6,7,9,103,104,105,106,107,109,110,111,112,113,
-                    115,116,118}
 
     errors = {
             500: "Number was expected",
@@ -33,7 +31,6 @@ class Lexer:
             self.lexical_components.append((string, value, li_num))
 
     def tokenize(self):
-        self.dfa.set_write_states(self.write_states)
         f = open(self.file_path, 'r')
 
         for li_num, line in enumerate(f, 1):
