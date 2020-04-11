@@ -27,8 +27,8 @@ def main():
     lexer.tokenize()
     lexer.error_check()
     if lexer.passes:
-        print("Lexical analysis complete, no errors found.")
-        lexer.print_tokens()
+        print("Lexical analysis complete, no errors found. Token list:",
+              lexer.lexical_components, sep='\n')
 
 
 if __name__ == "__main__":
