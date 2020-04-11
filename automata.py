@@ -11,12 +11,6 @@ class Automata:
         self.out_string = ""
         self.validated = False
 
-    def __len__(self):
-        return len(self.trans_states)
-
-    def __str__(self):
-        return ""
-
     def next_state_final(self, c):
         return self.transitions[0][self.char_type(c)] in self.final_states
 
