@@ -84,3 +84,4 @@ class Lexer:
     def print_tokens(self):
         for lexical in self.lexical_components:
             print(lexical)
+
