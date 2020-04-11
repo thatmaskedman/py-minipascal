@@ -7,7 +7,7 @@ class Lexer:
         111, 112, 113, 114, 115, 116, 117, 118, 500, 501, 502, 503, 504}
 
     write_states = {1,2,3,4,5,6,7,9,103,104,105,106,107,109,110,111,112,113,
-                    115,118}
+                    115,116,118}
 
     errors = {
             500: "Number was expected",
@@ -36,24 +36,23 @@ class Lexer:
         self.dfa.set_write_states(self.write_states)
         f = open(self.file_path, 'r')
 
-        look_ahead = False
         for li_num, line in enumerate(f, 1):
             for char in line:
                 self.dfa.change_state(char)
+                if self.dfa.current_state in {100,101,102,119,108,110}:
+                    self.dfa.change_state(char)
+                    self.dfa.make_string()
+                    self.create_token(self.dfa.out_string,
+                                      self.dfa.current_state,
+                                      li_num,)
+                    self.dfa.clear()
+                    self.dfa.change_state(char)
+
                 if self.dfa.validated:
                     self.dfa.make_string()
                     self.create_token(self.dfa.out_string,
                                       self.dfa.current_state,
-                                      li_num)
-
-                    if (self.dfa.next_state_final(char)
-                        and self.dfa.current_state in {100,101,102}):
-                        self.dfa.clear()
-                        self.dfa.change_state(char)
-                        self.dfa.make_string()
-                        self.create_token(self.dfa.out_string,
-                                          self.dfa.current_state,
-                                          li_num,)
+                                      li_num,)
                     self.dfa.clear()
 
             self.dfa.change_state('EOL')
@@ -73,18 +72,16 @@ class Lexer:
         with open(self.file_path, 'r') as f:
             lines =  f.readlines()
 
-        # for tokens in self.lexical_components:
-        #     token, value, li_num = tokens
-        #     self.validated = True
+        for tokens in self.lexical_components:
+            token, value, li_num = tokens
 
-        #     if value >= 500 <= 504:
-        #         print(lines[li_num-1][:-1],
-        #             f"^Error at line {li_num}; {self.errors[value]}",
-        #               sep='\n')
-        #         break
+            if value >= 500 <= 504:
+                print(lines[li_num-1][:-1],
+                    f"Lexical error at line {li_num}: {self.errors[value]}",
+                      sep='\n')
+                break
 
-        # self.passes = not value in self.errors
-        self.passes = True
+        self.passes = not value in self.errors
 
     def print_tokens(self):
         for lexical in self.lexical_components:

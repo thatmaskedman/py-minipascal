@@ -13,7 +13,8 @@ begin
     mult := my_int * my_int;
 
     i := 0;
-    {Three way loop}
+
+    {Three iteration loop}
     while i <= 3 do
     begin
         if (i = 0) = true then

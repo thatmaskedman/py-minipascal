@@ -1,5 +1,4 @@
 var a : integer
 begin
-    a3
-
+    a<b
 end.
