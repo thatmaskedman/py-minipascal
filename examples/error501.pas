@@ -1,4 +1,4 @@
-var a : integer
+program error501;
+var a : integer;
 begin
-    a<b
-end.
+    {Comment
