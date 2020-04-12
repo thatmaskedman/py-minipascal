@@ -1,6 +1,3 @@
-from automata import Automata
-
-
 class Lexer:
 
     errors = {
