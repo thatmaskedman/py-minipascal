@@ -1,12 +1,11 @@
+class LexicalComponent:
+    def __init__(self, token, token_id, li_num):
+        self.token = token
+        self.token_id = token_id
+        self.li_num = li_num
+
 class Lexer:
-
-    errors = {
-            500: "Number was expected",
-            501: "Unexpected end of file",
-            502: "Unexpected end of line",
-            503: "Ilegal character"
-        }
-
+    
     def __init__(self, dfa, keywords, sourcefile):
         self.lexical_components = []
         self.file_path = sourcefile
@@ -62,7 +61,16 @@ class Lexer:
                           li_num,)
             self.dfa.clear()
 
+
     def error_check(self):
+
+        errors = {
+            500: "Number was expected",
+            501: "Unexpected end of file",
+            502: "Unexpected end of line",
+            503: "Ilegal character"
+        }
+
         with open(self.file_path, 'r') as f:
             lines = f.readlines()
 
@@ -74,6 +82,3 @@ class Lexer:
                       f"Lexical error at line {li_num}: {self.errors[value]}",
                       sep='\n')
                 break
-
-        self.passes = value not in self.errors
-

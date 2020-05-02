@@ -1,7 +1,6 @@
-class SyntaxTree(object):
+class SyntaxTree:
 
-    """Docstring for SyntaxTree. """
-
-    def __init__(self):
-        """TODO: to be defined. """
-        
+    def __init__(self, tree, terminal, nonterminal):
+        self.tree
+        self.terminal = terminal
+        self.nonterminal = nonterminal
