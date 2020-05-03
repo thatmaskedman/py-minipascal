@@ -9,52 +9,81 @@ class LexicalComponent:
     def __str__(self):
         return f"{self.token}, {self.token_id}, {self.li_num} "
 
+class SyntacticError(exception):
+    pass
+
 class Parser:
     def __init__(self, lexical_components):
-        self.lexical_components = peekable(
+        self.lexical_components = seekable(
                 [LexicalComponents(*comp) for comp in lexical_components])
         self.buffer = ""
         self.passes = False
 
+
+    def consume_token(self, token=None, token_id=None):
+        if token_id is None:
+            if next(self.lexical_components.token) == token:
+                return
+            else:
+                raise SyntacticError("Syntax Error")
+        else:
+            if next(self.lexical_components.token_id) == token_id:
+                return
+            else:
+                raise SyntacticError("Syntax Error")
+
+
+    def peek_token(self, token="", token_id=0):
+        if token_id is None:
+            return self.lexical_components.peek().token == token:
+
+        else:
+            return self.lexical_components.peek().token_id == token_id:
+
+
     def program(self):
-
-        if next(self.lexical_components).token != "program":
-            pass
-        
-        #<Identifier>
-        if next(self.lexical_components).token_id != 100:
-            pass
-
-        if next(self.lexical_components).token != ';':
-            pass
-
+        # <program> ::=	program <identifier> ; <block> .
+        self.consume_token("program")
+        self.consume_token(token_id=100)
+        self.consume_token(";")
         self.block()
-
-        if next(self.lexical_components).token != '.':
-            self.passes = True
-
+        self.consume_token(".")
 
     def block(self):
+        # <block> ::= <variable declaration part>
+        #             <statement part>
         self.variable_declaration_part()
         self.statement_part()
 
     def variable_declaration_part(self):
-        if self.lexical_components.peek != "var":
-            return
 
-        if next(self.lexical_components).token != "var":
-            pass
-        
-        self.variable_declaration()
+        # <variable declaration part> ::= <empty>
+        #                                 |var <variable declaration> ;
+        #                                  { <variable declaration> ; }
+
+        self.consume_token("var")
+        self.consume_token(token_id=100)
+        self.consume_token(";")
+
+        if self.peek_token("var"):
+            #<Identifier>
+            while self.peek_token(token_id=100):
+                self.variable_declaration()
+                self.consume_token(";")
+        return
 
     def variable_declaration(self):
-        if next(self.lexical_components).token_id != 100:
-            pass
+        # <variable declaration> ::=	<identifier > { , <identifier> } : <identifier>
 
-        if next(self.lexical_components).token != ":":
-            pass
-        
-        self.type()
+        self.consume_token(token_id=100)
+
+        if self.peek_token(","):
+            self.consume_token(",")
+            while self.peek_token(","):
+                pass
+
+        self.consume_token(":")
+        self.consume_token(token_id=100)
 
     def type(self):
         self.simple_type()
@@ -130,19 +159,19 @@ class Parser:
         if next(self.lexical_components).token != ")":
             pass
 
-    def input_variable():
+    def input_variable(self):
         pass
     
-    def write_statement():
+    def write_statement(self):
         pass
     
-    def output_value():
+    def output_value(self):
         pass
     
-    def structured_statement():
+    def structured_statement(self):
         pass
     
-    def if_statement():
+    def if_statement(self):
 
         if next(self.lexical_components).token != "if":
             pass
@@ -165,16 +194,16 @@ class Parser:
     
         self.statement()
 
-    def expression():
+    def expression(self):
         self.simple_expression()
         pass
 
-    def simple_expression():
+    def simple_expression(self):
         self.sign()
         self.term()
         pass
 
-    def term():
+    def term(self):
         self.factor()
 
         #{}
@@ -182,7 +211,7 @@ class Parser:
 
         pass
 
-    def factor():
+    def factor(self):
         #|
         self.variable()
         #|
@@ -203,7 +232,7 @@ class Parser:
 
         self.factor()
 
-    def relational_operator():
+    def relational_operator(self):
 
         if next(self.lexical_components).token != "=":
             pass
@@ -225,7 +254,7 @@ class Parser:
 
         pass
 
-    def sign():
+    def sign(self):
         #|
         if next(self.lexical_components).token != "+":
             pass
@@ -238,7 +267,7 @@ class Parser:
         if next(self.lexical_components).token != "None":
             pass
 
-    def adding_operator():
+    def adding_operator(self):
         if next(self.lexical_components).token != "+":
             pass
 
@@ -249,7 +278,7 @@ class Parser:
             pass
         pass
 
-    def multiplying_operator():
+    def multiplying_operator(self):
         if next(self.lexical_components).token != "*":
             pass
 
@@ -260,80 +289,17 @@ class Parser:
             pass
 
     def variable():
-        self.entire_variable()
+        self.entire_variable(self)
         pass
 
     def entire_variable():
-        self.variable_identifier()
+        self.variable_identifier(self)
         pass
 
-    def variable_identifier():
+    def variable_identifier(self):
         #identifier
         if next(self.lexical_components).token_id != 100:
             pass
-
-"""
-# identifier = ""
-# variable_identifier = Node("variable identifier", identifier)
-# entire_variable = Node("entire_variable", variable_identifier)
-# variable = Node()
-# multiplying_operator = Node()
-# adding_operator = Node()
-# sign = Node()
-# relational_operator = Node()
-# factor = Node()
-# term = Node()
-# simple_expression = Node()
-# variable = Node()
-# variable = Node()
-# variable = Node()
-# variable = Node()
-
-<program> ::=	program <identifier> ; <block> .
-<block> ::=	<variable declaration part>
-
-<procedure declaration part>
-<statement part>
-<variable declaration part> ::=	<empty> |
-var <variable declaration> ;
-    { <variable declaration> ; }
-<variable declaration> ::=	<identifier > { , <identifier> } : <type>
-<type> ::=	<simple type> | <array type
-<array type> ::=	array [ <index range> ] of <simple type>
-<index range> ::=	<integer constant> .. <integer constant>
-<simple type> ::=	<type identifier>
-<type identifier> ::=	<identifier>
-<procedure declaration part> ::=	{ <procedure declaration> ; }
-<procedure declaration> ::=	procedure <identifier> ; <block>
-<statement part> ::=	<compound statement>
-<compound statement> ::=	begin <statement>{ ; <statement> } end
-<statement> ::=	<simple statement> | <structured statement>
-<simple statement> ::=	<assignment statement> | <procedure statement> |
-<read statement> | <write statement>
-<assignment statement> ::=	<variable> := <expression>
-<procedure statement> ::=	<procedure identifier>
-<procedure identifier> ::=	<identifier>
-<read statement> ::=	read ( <input variable> { , <input variable> } )
-<input variable> ::=	<variable>
-<write statement> ::=	write ( <output value> { , <output value> } )
-<output value> ::=	<expression>
-<structured statement> ::=	<compound statement> | <if statement> |
-<while statement>
-<if statement> ::=	if <expression> then <statement> |
-if <expression> then <statement> else <statement>
-<while statement> ::=	while <expression> do <statement>
-<expression> ::=	<simple expression> |
-<simple expression> <relational operator> <simple expression>
-<simple expression> ::=	<sign> <term> { <adding operator> <term> }
-<term> ::=	<factor> { <multiplying operator> <factor> }
-<factor> ::=	<variable> | <constant> | ( <expression> ) | not <factor>
-<relational operator> ::=	= | <> | < | <= | >= | >
-<sign> ::=	+ | - | <empty>
-<adding operator> ::=	+ | - | or
-<multiplying operator> ::=	* | div | and
-<variable> ::=	<entire variable> | <indexed variable>
-<entire variable> ::=	<variable identifier>
-<variable identifier> ::=	<identifier>
 
 """
         pass
@@ -382,69 +348,4 @@ if <expression> then <statement> else <statement>
 
     def variable_identifier():
         pass
-
-
-"""
-# identifier = ""
-# variable_identifier = Node("variable identifier", identifier)
-# entire_variable = Node("entire_variable", variable_identifier)
-# variable = Node()
-# multiplying_operator = Node()
-# adding_operator = Node()
-# sign = Node()
-# relational_operator = Node()
-# factor = Node()
-# term = Node()
-# simple_expression = Node()
-# variable = Node()
-# variable = Node()
-# variable = Node()
-# variable = Node()
-
-<program> ::=	program <identifier> ; <block> .
-<block> ::=	<variable declaration part>
-
-<procedure declaration part>
-<statement part>
-<variable declaration part> ::=	<empty> |
-var <variable declaration> ;
-    { <variable declaration> ; }
-<variable declaration> ::=	<identifier > { , <identifier> } : <type>
-<type> ::=	<simple type> | <array type
-<array type> ::=	array [ <index range> ] of <simple type>
-<index range> ::=	<integer constant> .. <integer constant>
-<simple type> ::=	<type identifier>
-<type identifier> ::=	<identifier>
-<procedure declaration part> ::=	{ <procedure declaration> ; }
-<procedure declaration> ::=	procedure <identifier> ; <block>
-<statement part> ::=	<compound statement>
-<compound statement> ::=	begin <statement>{ ; <statement> } end
-<statement> ::=	<simple statement> | <structured statement>
-<simple statement> ::=	<assignment statement> | <procedure statement> |
-<read statement> | <write statement>
-<assignment statement> ::=	<variable> := <expression>
-<procedure statement> ::=	<procedure identifier>
-<procedure identifier> ::=	<identifier>
-<read statement> ::=	read ( <input variable> { , <input variable> } )
-<input variable> ::=	<variable>
-<write statement> ::=	write ( <output value> { , <output value> } )
-<output value> ::=	<expression>
-<structured statement> ::=	<compound statement> | <if statement> |
-<while statement>
-<if statement> ::=	if <expression> then <statement> |
-if <expression> then <statement> else <statement>
-<while statement> ::=	while <expression> do <statement>
-<expression> ::=	<simple expression> |
-<simple expression> <relational operator> <simple expression>
-<simple expression> ::=	<sign> <term> { <adding operator> <term> }
-<term> ::=	<factor> { <multiplying operator> <factor> }
-<factor> ::=	<variable> | <constant> | ( <expression> ) | not <factor>
-<relational operator> ::=	= | <> | < | <= | >= | >
-<sign> ::=	+ | - | <empty>
-<adding operator> ::=	+ | - | or
-<multiplying operator> ::=	* | div | and
-<variable> ::=	<entire variable> | <indexed variable>
-<entire variable> ::=	<variable identifier>
-<variable identifier> ::=	<identifier>
-
 """
