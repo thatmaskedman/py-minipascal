@@ -55,7 +55,7 @@ class Parser:
         self.consume_token("program")
         self.consume_token(token_id=100)
         self.consume_token(";")
-        # self.block()
+        self.block()
         self.consume_token(".")
 
     def block(self):
