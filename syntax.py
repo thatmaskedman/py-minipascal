@@ -9,36 +9,45 @@ class LexicalComponent:
     def __str__(self):
         return f"{self.token}, {self.token_id}, {self.li_num} "
 
-class SyntacticError(exception):
+class SyntacticError(Exception):
     pass
 
 class Parser:
-    def __init__(self, lexical_components):
-        self.lexical_components = seekable(
-                [LexicalComponents(*comp) for comp in lexical_components])
-        self.buffer = ""
+    def __init__(self, lexical_components, file_source):
+        self.lexical_components = peekable(
+                [LexicalComponent(*comp) for comp in lexical_components])
+        
+        self.lines = open(file_source, 'r').readlines()
         self.passes = False
 
 
     def consume_token(self, token=None, token_id=None):
-        if token_id is None:
-            if next(self.lexical_components.token) == token:
-                return
+        consumed = next(self.lexical_components)
+        try:
+            if token_id is None:
+                if consumed.token == token:
+                    return
+                else:
+                    raise SyntacticError("Syntax Error")
             else:
-                raise SyntacticError("Syntax Error")
-        else:
-            if next(self.lexical_components.token_id) == token_id:
-                return
-            else:
-                raise SyntacticError("Syntax Error")
+                if consumed.token_id == token_id:
+                    return
+                else:
+                    raise SyntacticError("Syntax Error")
 
+        except SyntacticError:
+            print(f"{self.lines[consumed.li_num - 1]}"[:-1],
+                  f"Syntax error at line {consumed.li_num}: {token} was expected.",
+                  sep="\n")
+            quit()
+            
 
     def peek_token(self, token="", token_id=0):
         if token_id is None:
-            return self.lexical_components.peek().token == token:
+            return self.lexical_components.peek().token == token
 
         else:
-            return self.lexical_components.peek().token_id == token_id:
+            return self.lexical_components.peek().token_id == token_id
 
 
     def program(self):
@@ -46,7 +55,7 @@ class Parser:
         self.consume_token("program")
         self.consume_token(token_id=100)
         self.consume_token(";")
-        self.block()
+        # self.block()
         self.consume_token(".")
 
     def block(self):
