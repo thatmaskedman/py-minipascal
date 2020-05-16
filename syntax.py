@@ -20,7 +20,6 @@ class Parser:
         self.lines = open(file_source, 'r').readlines()
         self.passes = False
 
-
     def consume_token(self, token=None, token_id=None):
         consumed = next(self.lexical_components)
         try:
@@ -40,7 +39,6 @@ class Parser:
                   f"Syntax error at line {consumed.li_num}: {token} was expected.",
                   sep="\n")
             quit()
-            
 
     def peek_token(self, token="", token_id=0):
         if token_id is None:
@@ -65,7 +63,6 @@ class Parser:
         self.statement_part()
 
     def variable_declaration_part(self):
-
         # <variable declaration part> ::= <empty>
         #                                 |var <variable declaration> ;
         #                                  { <variable declaration> ; }
@@ -95,47 +92,62 @@ class Parser:
         self.consume_token(token_id=100)
 
     def type(self):
-        self.simple_type()
+        #<type> ::= INteger
+
+        if self.peek_token("integer"):
+            self.consume_token("integer")
+
+        elif self.peek_token("real"):
+            self.consume_token("real")
+        
+        elif self.peek_token("string"):
+            self.consume_token("string")
 
     def simple_type(self):
         type_identifier()
         pass
 
-    def type_identifier(self):
-        #<identifier>
-        if next(self.lexical_components).token_id != 100:
-            pass
-
     def statement_part(self):
-        self.compound_statement()
-        pass
+        self.consume_token("begin")
+        
+        if self.peek_token(";"):
+            self.consume_token(";")
+            while self.peek_token(token_id=100):
+                self.statement()
 
-    def compound_statement(self):
-        if next(self.lexical_components).token != "begin":
-            pass
-
-        self.statement()
-
-        if next(self.lexical_components).token != "end":
-            pass
+        self.consume_token("end")
     
     def statement(self):
+        if self.peek_token(token_id=100):
+            self.simple_statement():
+
+        elif self.peek_token("read"):
+            self.simple_statement():
+
+        elif self.peek_token("write"):
+            self.assignment_statement()
+
         self.simple_statement()
         self.structured_statement()
     
     def simple_statement(self):
-        self.assignment_statement()
-        self.read_statement()
-        self.write_statement()
-        pass
+        # <simple statement> ::= <assignment statement> |  
+        #                       <read statement> | <write statement>  
+
+        if self.peek_token(token_id=100):
+            self.assignment_statement()
+
+        elif self.peek_token("read"):
+            self.read_statement()
+
+        elif self.peek_token("write"):
+            self.write_statement()
     
     def assignment_statement(self):
-        self.variable()
-
-        if next(self.lexical_components).token != ":=":
-            pass
-
+        self.consume_token(token_id=100)
+        self.consume_token(":=")
         self.expression()
+
     
     def procedure_statement(self):
         pass
@@ -144,171 +156,143 @@ class Parser:
         pass
     
     def read_statement(self):
-        if next(self.lexical_components).token != "read":
-            pass
-        if next(self.lexical_components).token != "(":
-            pass
-
-        self.input_variable()
-
-        if next(self.lexical_components).token != ")":
-            pass
-
-    def input_variable():
-        pass
-    
-    def write_statement(self):
-        if next(self.lexical_components).token != "write":
-            pass
-        if next(self.lexical_components).token != "(":
-            pass
-
-        self.output_value()
-
-        if next(self.lexical_components).token != ")":
-            pass
-
-    def input_variable(self):
-        pass
-    
-    def write_statement(self):
-        pass
-    
-    def output_value(self):
-        pass
-    
-    def structured_statement(self):
-        pass
-    
-    def if_statement(self):
-
-        if next(self.lexical_components).token != "if":
-            pass
+        self.consume_token("read")
+        self.consume_token("(")
         
-        self.expression()
+        self.consume_token(token_id=100)
 
-        if next(self.lexical_components).token != "then":
-            pass
-        self.statement()
-        pass
+        self.consume_token(")")
+        return
+
     
-    def while_statement(self):
-        if next(self.lexical_components).token != "while":
-            pass
+    def write_statement(self):
+        self.consume_token("write")
+        self.consume_token("(")
+        
+        self.consume_token(token_id=100)
 
-        self.expression()
+        self.consume_token(")")
 
-        if next(self.lexical_components).token != "do":
-            pass
-    
-        self.statement()
+        return
 
     def expression(self):
-        self.simple_expression()
+        self.simple_expression() 
+
         pass
 
     def simple_expression(self):
-        self.sign()
-        self.term()
         pass
 
     def term(self):
         self.factor()
 
-        #{}
-
-
-        pass
-
     def factor(self):
-        #|
-        self.variable()
-        #|
-        self.constant()
-        #|
-        if next(self.lexical_components).token != "(":
-            pass
+        if self.peek_token(token_id=100)
+            self.consume_token(token_id=100):
+            return
+
+        elif self.peek_token("not"):
+            self.consume_token("not"):
+            self.factor()
+
+        elif self.peek_token("not"):
+            self.consume_token("not"):
+            self.factor()
+
+        elif self.peek_token("(")
+            self.consume_token("("):
+            self.expression()
+            self.consume_token(")"):
+            return 
         
-        self.expression()
-
-        if next(self.lexical_components).token != ")":
-            pass
-
-        #|
-
-        if next(self.lexical_components).token != "not":
-            pass
-
-        self.factor()
-
-    def relational_operator(self):
-
-        if next(self.lexical_components).token != "=":
-            pass
-        #|
-        if next(self.lexical_components).token != "<>":
-            pass
-        #|
-        if next(self.lexical_components).token != "<":
-            pass
-        #|
-        if next(self.lexical_components).token != "<=":
-            pass
-        #|
-        if next(self.lexical_components).token != ">=":
-            pass
-        #|
-        if next(self.lexical_components).token != ">":
-            pass
-
-        pass
+        else:
+            self.constant()
+            return
 
     def sign(self):
-        #|
-        if next(self.lexical_components).token != "+":
-            pass
+        if self.peek_token("+"):
+            self.consume_token("+"):
+            return
 
-        #|
-        if next(self.lexical_components).token != "=":
-            pass
+        elif self.peek_token("-"):
+            self.consume_token("-"):
+            return
 
-        #|
-        if next(self.lexical_components).token != "None":
-            pass
+        else:
+            return
 
     def adding_operator(self):
-        if next(self.lexical_components).token != "+":
-            pass
+        if self.peek_token("+"):
+            self.consume_token("+"):
+            return
 
-        if next(self.lexical_components).token != "-":
-            pass
+        elif self.peek_token("-"):
+            self.consume_token("-"):
+            return
 
-        if next(self.lexical_components).token != "or":
-            pass
-        pass
+        elif self.peek_token("or"):
+            self.consume_token("or"):
+            return
+
+        else:
+            return
 
     def multiplying_operator(self):
-        if next(self.lexical_components).token != "*":
-            pass
+        if self.peek_token("*"):
+            self.consume_token("*"):
+            return
+        elif self.peek_token("div"):
+            self.consume_token("div"):
+            return
+        elif self.peek_token("and"):
+            self.consume_token("and"):
+            return
 
-        if next(self.lexical_components).token != "div":
-            pass
 
-        if next(self.lexical_components).token != "and":
-            pass
+    def relational_operator(self):
+        if self.peek_token("="):
+            self.consume_token("=")
+            return
+        elif self.peek_token("<>"):
+            self.consume_token("<>")
+            return
+        
+        elif self.peek_token("<"):
+            self.consume_token("<")
+            return
+        
+        elif self.peek_token("<="):
+            self.consume_token("<=")
+            return
+        
+        elif self.peek_token(">="):
+            self.consume_token(">=")
+            return
 
-    def variable():
-        self.entire_variable(self)
-        pass
+        elif self.peek_token(">"):
+            self.consume_token(">")
+            return
 
-    def entire_variable():
-        self.variable_identifier(self)
-        pass
+    def constant(self):
+        #Constant identifier
+        if self.peek_token(token_id="100")
+            self.consume_token(token_id="100")
+            return
 
-    def variable_identifier(self):
-        #identifier
-        if next(self.lexical_components).token_id != 100:
-            pass
+        #Integer
+        elif self.peek_token(token_id="101")
+            self.consume_token(token_id="101")
+            return
+
+        #Real
+        elif self.peek_token(token_id="102")
+            self.consume_token(token_id="102")
+            return
+        
+        #Character constant
+        elif self.peek_token(token_id="118")
+            self.consume_token(token_id="118")
+            return
 
 """
         pass
