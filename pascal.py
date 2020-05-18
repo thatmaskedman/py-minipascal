@@ -31,11 +31,11 @@ def main():
         print("Lexical analysis complete, no errors found. Token list:",
               lexer.lexical_components, sep='\n')
 
-    for component in lexer.lexical_components:
-        print(component)
+        for component in lexer.lexical_components:
+            print(component)
         
-    parser = Parser(lexer.lexical_components, args.source)
-    parser.program()
+        parser = Parser(lexer.lexical_components, args.source)
+        parser.program()
     
 
 if __name__ == "__main__":

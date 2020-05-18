@@ -7,32 +7,26 @@ var my_int, sum, sub, mult, i : integer;
 begin
     my_string := "foo";
     my_real := 1.0;
-
+    
     sum := my_int + my_int;
     sub := my_int - my_int;
     mult := my_int * my_int;
+    divi := my_int div my_int;
+
+    foo := -3;
 
     i := 0;
 
     {Three iteration loop}
-    while i <= 3 do
+    while i <= 3 do 
     begin
-        if (i = 0) = true then
-            begin
-                write("Zero");
-            end;
-        else if (i = 0) = false then
-            begin
-                write("one");
-            end;
+        if (i = 0) then 
+            write("zero")
+        else if (i = 1) then
+            write("one")
         else
-        begin
-            write("Not one");
-        end;
-         i :=  i + 1;
-    end;
-
+            write("two");
+        i :=  i + 1;
+    end
     {Echo user's input}
-    my_input := read();
-    write(my_input)
 end.

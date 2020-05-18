@@ -71,8 +71,9 @@ class Lexer:
         for tokens in self.lexical_components:
             token, value, li_num = tokens
 
-            if value >= 500 <= 504:
+            if value in errors:
                 print(lines[li_num-1][:-1],
-                      f"Lexical error at line {li_num}: {self.errors[value]}",
+                      f"Lexical error at line {li_num}: {errors[value]}",
                       sep='\n')
+                self.passes = False 
                 break
