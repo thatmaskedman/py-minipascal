@@ -5,7 +5,7 @@ class Lexer:
         self.file_path = sourcefile
         self.keywords = keywords
         self.dfa = dfa
-        self.passes = False
+        self.passes = True
 
     def create_token(self, string, value, li_num):
         if string in self.keywords:

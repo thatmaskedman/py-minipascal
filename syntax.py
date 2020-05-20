@@ -36,21 +36,6 @@ class Parser:
         except StopIteration:
             print(f"End of file reached, Syntax Error: \"{token}\" was expected")
             quit()
-            # if token_id is None:
-            #     if consumed.token == token:
-            #         return
-            #     else:
-            #         raise SyntacticError(consumed, self.lines, token)
-            # else:
-            #     if consumed.token_id == token_id:
-            #         return
-            #     else:
-            #         raise SyntacticError(consumed, self.lines, expected_id=token_id)
-        # except SyntacticError:
-        #     error = f"{self.lines[consumed.li_num - 1]}"[:-1] +
-        #           f"Syntax error at line {consumed.li_num}: {token} was expected.",
-        #           sep="\n")
-        #     quit()
 
     def peek_token(self, token="", token_id=0):
         if token_id == 0:
@@ -165,7 +150,7 @@ class Parser:
         self.consume_token("(")
         
         self.consume_token(token_id=100)
-        if self.peek(","):
+        if self.peek_token(","):
             while self.peek_token(","):
                 self.consume_token(",")
                 self.consume_token(token_id=100)
@@ -207,7 +192,6 @@ class Parser:
 
     def simple_expression(self):
         # <simple expression> ::= <sign> <term> { <adding operator> <term> } 
-        
 
         self.sign()
         self.term()
@@ -278,82 +262,66 @@ class Parser:
     def sign(self):
         if self.peek_token("+"):
             self.consume_token("+")
-            return
 
         elif self.peek_token("-"):
             self.consume_token("-")
-            return
 
         else:
-            return
 
     def adding_operator(self):
         if self.peek_token("+"):
             self.consume_token("+")
-            return
 
         elif self.peek_token("-"):
             self.consume_token("-")
-            return
 
         elif self.peek_token("or"):
             self.consume_token("or")
-            return
 
     def multiplying_operator(self):
         if self.peek_token("*"):
             self.consume_token("*")
-            return
+
         elif self.peek_token("div"):
             self.consume_token("div")
-            return
+
         elif self.peek_token("and"):
             self.consume_token("and")
-            return
 
     def relational_operator(self):
         if self.peek_token("="):
             self.consume_token("=")
-            return
+
         elif self.peek_token("<>"):
             self.consume_token("<>")
-            return
         
         elif self.peek_token("<"):
             self.consume_token("<")
-            return
         
         elif self.peek_token("<="):
             self.consume_token("<=")
-            return
         
         elif self.peek_token(">="):
             self.consume_token(">=")
-            return
 
         elif self.peek_token(">"):
             self.consume_token(">")
-            return
 
     def constant(self):
         #Constant identifier"
 
         if self.peek_token(token_id=100):
             self.consume_token(token_id=100)
-            return
 
         #Integer
         elif self.peek_token(token_id=101):
             self.consume_token(token_id=101)
-            return
 
         #Real
         elif self.peek_token(token_id=102):
             self.consume_token(token_id=102)
-            return
         
         #Character constant
         elif self.peek_token(token_id=118):
             self.consume_token(token_id=118)
-            return
 
