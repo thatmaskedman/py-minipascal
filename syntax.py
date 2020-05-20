@@ -44,7 +44,7 @@ class Parser:
         else:
             return self.lexical_components.peek().token_id == token_id
 
-    def is_inset(self,items):
+    def next_tokens(self, *items):
         return self.lexical_components.peek().token in items
 
     def program(self):
@@ -120,10 +120,10 @@ class Parser:
 
         # print(self.lexical_components.peek())
 
-        if self.peek_token(token_id=100) or self.is_inset({"read", "write"}):
+        if self.peek_token(token_id=100) or self.next_tokens("read", "write"):
             self.simple_statement()
         
-        elif self.lexical_components.peek().token in {"begin", "if", "while"}:
+        elif self.next_tokens("begin", "if", "while"):  
             self.structured_statement()
     
 
@@ -184,7 +184,7 @@ class Parser:
     def expression(self):
         self.simple_expression()
         
-        if self.lexical_components.peek().token in {'<', '>', "<>", "=", ">=", "<="}:
+        if self.next_tokens('<', '>', "<>", "=", ">=", "<="):
             self.relational_operator()
 
             self.simple_expression()
@@ -238,8 +238,6 @@ class Parser:
             self.constant()
             return
 
-    
-
     def while_statement(self):
         #<while statement> ::= while <expression> do <statement>  
  
@@ -258,7 +256,6 @@ class Parser:
             self.consume_token("else")
             self.statement()
 
-
     def sign(self):
         if self.peek_token("+"):
             self.consume_token("+")
@@ -267,6 +264,7 @@ class Parser:
             self.consume_token("-")
 
         else:
+            return
 
     def adding_operator(self):
         if self.peek_token("+"):
