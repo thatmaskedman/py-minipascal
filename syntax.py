@@ -21,7 +21,7 @@ class Parser:
     def consume_token(self, token=None, token_id=None):
         try:
             consumed = next(self.lexical_components)
-            print(consumed)
+            # print(consumed)
             if token_id is None:
                 if consumed.token == token:
                     return
@@ -322,4 +322,3 @@ class Parser:
         #Character constant
         elif self.peek_token(token_id=118):
             self.consume_token(token_id=118)
-
