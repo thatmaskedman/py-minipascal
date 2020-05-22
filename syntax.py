@@ -48,26 +48,21 @@ class Parser:
         return self.lexical_components.peek().token in items
 
     def program(self):
-        # <program> ::=	program <identifier> ; <block> .
         self.consume_token("program")
         self.consume_token(token_id=100)
         self.consume_token(";")
         self.block()
         self.consume_token(".")
+        
+        self.passes = True
 
     def block(self):
-        # <block> ::= <variable declaration part>
-        #             <statement part>
         self.variable_declaration_part()
         self.statement_part()
 
     def variable_declaration_part(self):
-        # <variable declaration part> ::= <empty>
-        #                                 |var <variable declaration> ;
-        #                                  { <variable declaration> ; }
         
         if self.peek_token("var"):
-            #<Identifier>
             self.consume_token("var")
             self.variable_declaration()
             self.consume_token(";")
@@ -77,8 +72,6 @@ class Parser:
                     self.consume_token(";")
 
     def variable_declaration(self):
-        # <variable declaration> ::= <identifier > { , <identifier> } : <identifier>
-
         self.consume_token(token_id=100)
 
         if self.peek_token(","):
@@ -101,12 +94,14 @@ class Parser:
         
         elif self.peek_token("string"):
             self.consume_token("string")
-
+    
     def statement_part(self):
+        self.compound_statement()
+
+    def compound_statement(self):
 
         self.consume_token("begin")
         self.statement()
-        
 
         if self.peek_token(";"):
             while self.peek_token(";"):
@@ -116,10 +111,6 @@ class Parser:
         self.consume_token("end")
     
     def statement(self):
-        #<statement> ::= <simple statement> | <structured statement>  
-
-        # print(self.lexical_components.peek())
-
         if self.peek_token(token_id=100) or self.next_tokens("read", "write"):
             self.simple_statement()
         
@@ -128,9 +119,6 @@ class Parser:
     
 
     def simple_statement(self):
-        # <simple statement> ::= <assignment statement> |  
-        #                        <read statement> | <write statement>  
-
         if self.peek_token(token_id=100):
             self.assignment_statement()
 
@@ -167,13 +155,16 @@ class Parser:
         if self.peek_token(","):
             while self.peek_token(","):
                 self.consume_token(",")
-                self.expression()
+                self.output_value()
 
         self.consume_token(")")
 
+    def output_value(self):
+        self.expression()
+
     def structured_statement(self):
         if self.peek_token("begin"):
-            self.statement_part()
+            self.compound_statement()
 
         elif self.peek_token("if"):
             self.if_statement()
@@ -191,8 +182,6 @@ class Parser:
 
 
     def simple_expression(self):
-        # <simple expression> ::= <sign> <term> { <adding operator> <term> } 
-
         self.sign()
         self.term()
         
@@ -214,8 +203,6 @@ class Parser:
         return
 
     def factor(self):
-        #<factor> ::= <variable> | <constant> | ( <expression> ) | not <factor>  
-
         if self.peek_token(token_id=100):
             self.consume_token(token_id=100)
             return
@@ -239,8 +226,6 @@ class Parser:
             return
 
     def while_statement(self):
-        #<while statement> ::= while <expression> do <statement>  
- 
         self.consume_token("while")
         self.expression()
         self.consume_token("do")
