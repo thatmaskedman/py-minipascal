@@ -21,7 +21,7 @@ class Parser:
     def consume_token(self, token=None, token_id=None):
         try:
             consumed = next(self.lexical_components)
-            # print(consumed)
+            print(consumed)
             if token_id is None:
                 if consumed.token == token:
                     return
@@ -117,7 +117,6 @@ class Parser:
         elif self.next_tokens("begin", "if", "while"):  
             self.structured_statement()
     
-
     def simple_statement(self):
         if self.peek_token(token_id=100):
             self.assignment_statement()
@@ -141,11 +140,10 @@ class Parser:
         if self.peek_token(","):
             while self.peek_token(","):
                 self.consume_token(",")
-                self.consume_token(token_id=100)
+                self.input_variable()
+                # self.consume_token(token_id=100)
 
         self.consume_token(")")
-        return
-
     
     def write_statement(self):
         self.consume_token("write")
@@ -190,8 +188,6 @@ class Parser:
             while self.lexical_components.peek().token in {'+', '-', 'or'}:
                 self.adding_operator()
                 self.term()
-        return
-
 
     def term(self):
         self.factor()
@@ -200,7 +196,6 @@ class Parser:
                 self.multiplying_operator()
                 self.factor()
 
-        return
 
     def factor(self):
         if self.peek_token(token_id=100):
@@ -219,11 +214,9 @@ class Parser:
             self.consume_token("(")
             self.expression()
             self.consume_token(")")
-            return 
         
         else:
             self.constant()
-            return
 
     def while_statement(self):
         self.consume_token("while")
@@ -289,6 +282,15 @@ class Parser:
 
         elif self.peek_token(">"):
             self.consume_token(">")
+
+    def variable(self):
+        self.entire_variable()
+
+    def entire_variable(self):
+        self.variable_identifier()
+    
+    def variable_identifier(self):
+        self.consume_token(token_id=100)
 
     def constant(self):
         #Constant identifier"

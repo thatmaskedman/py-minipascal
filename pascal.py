@@ -27,15 +27,19 @@ def main():
     lexer = Lexer(dfa, keywords, args.source)
     lexer.tokenize()
     lexer.error_check()
+
     if lexer.passes:
         print("Lexical analysis complete, no errors found. Token list:",
               lexer.lexical_components, sep='\n')
 
-        for component in lexer.lexical_components:
-            print(component)
+        # for component in lexer.lexical_components:
+        #     print(component)
         
         parser = Parser(lexer.lexical_components, args.source)
         parser.program()
+
+    if parser.passes:
+        print("Syntax analysis complete, no errores found.")
     
 
 if __name__ == "__main__":
