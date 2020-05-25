@@ -1,3 +1,4 @@
+#TODO Will be refactored
 class SyntaxTree:
 
     def __init__(self, tree, terminal, nonterminal):
