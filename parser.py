@@ -141,7 +141,6 @@ class Parser:
             while self.peek_token(","):
                 self.consume_token(",")
                 self.input_variable()
-                # self.consume_token(token_id=100)
 
         self.consume_token(")")
     
