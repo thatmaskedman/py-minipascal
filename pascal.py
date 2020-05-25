@@ -4,7 +4,7 @@ import argparse
 import yaml
 from automata import Automata
 from lexer import Lexer
-from syntax import Parser
+from parser import Parser
 
 final_states = {100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110,
                 111, 112, 113, 114, 115, 116, 117, 118, 119, 500, 501, 502,
@@ -38,9 +38,9 @@ def main():
         parser = Parser(lexer.lexical_components, args.source)
         parser.program()
 
-    if parser.passes:
-        print("Syntax analysis complete, no errores found.")
-    
+        if parser.passes:
+            print("Syntax analysis complete, no errores found.")
+
 
 if __name__ == "__main__":
     main()
